@@ -1,11 +1,29 @@
 # VoxTune Fine-Tuning Studio
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg)
+![React](https://img.shields.io/badge/frontend-React%20%2B%20Vite-61DAFB.svg)
+
 A web platform that fine-tunes **existing open-source** STT / TTS / text-LLM models on your data. It is not a new model.
 Flow: pick a task → pick model → upload dataset → analyze/clean/split → get a strategy recommendation → train →
 evaluate against the base model → compare methods → register / export.
 
 **Rule:** no simulated training. If a model/method can't run (not implemented, or not enough VRAM), the capability
 registry marks it *unsupported* and says why.
+
+## Contents
+
+- [Screenshots](#screenshots)
+- [Run](#run)
+- [What is implemented](#what-is-implemented)
+- [Fine-tuning core](#fine-tuning-core)
+- [Text-LLM fine-tuning (Gemma-style)](#text-llm-fine-tuning-gemma-style)
+- [Nothing on screen is hardcoded](#nothing-on-screen-is-hardcoded)
+- [What has actually been run](#what-has-actually-been-run)
+- [Layout](#layout)
+- [Tests](#tests)
+- [License](#license)
 
 ## Screenshots
 
@@ -18,8 +36,6 @@ registry marks it *unsupported* and says why.
 | **Run detail: LR finder, base vs. tuned, sample outputs** — a real SmolLM2 LoRA run: the learning-rate range test that picked the training LR, the metric table comparing the base model to the fine-tuned one, and side-by-side generated samples. | ![Run detail](docs/screenshots/runs.png) |
 | **Method comparison** — run several fine-tuning methods on the same dataset and compare accuracy, time and peak GPU memory side by side. | ![Compare](docs/screenshots/compare.png) |
 | **Model registry** — every saved checkpoint with its dataset, method and measured metrics, ready to export as an adapter or a merged model. | ![Registry](docs/screenshots/registry.png) |
-
-## Run
 
 ## Run
 
@@ -213,3 +229,7 @@ check), `e2e.py` (drives the API through a real training run), `fetch_model.py` 
 
 `cd backend; python -m pytest` (unit + API tests, including `test_llm.py`'s real tiny-Llama training test).
 `python scripts/e2e.py stt whisper-tiny lora,qlora,adapter,full` runs real training against a running server.
+
+## License
+
+[MIT](LICENSE)
