@@ -21,7 +21,13 @@ jobs:
         run: pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Install the rest (GPU-only packages are imported lazily and skipped here)
         run: grep -vE '^(torch|bitsandbytes|nvidia-ml-py)$' requirements.txt > /tmp/req-ci.txt && pip install -r /tmp/req-ci.txt
-      - run: python -m pytest -q
+      - name: Run tests
+        run: |
+          set +e
+          python -m pytest -q --tb=short 2>&1 | tee pytest.log
+          rc=${PIPESTATUS[0]}
+          grep -E "^(FAILED|ERROR)|^E  " pytest.log | head -8 | while IFS= read -r l; do echo "::error::${l:0:300}"; done
+          exit $rc
 
   frontend:
     runs-on: ubuntu-latest
